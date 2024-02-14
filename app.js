@@ -1,18 +1,21 @@
 /** BizTime express application. */
 
-
 const express = require("express");
-
 const app = express();
-const ExpressError = require("./expressError")
-
 app.use(express.json());
+
+const ExpressError = require("./expressError");
+const cRoutes = require("./routes/companies");
+// const cInvoices = require("./routes/invoices");
+
+app.use("/companies", cRoutes);
+// app.use("/invoices", cInvoices);
 
 
 /** 404 handler */
 
-app.use(function(req, res, next) {
-  const err = new ExpressError("Not Found", 404);
+app.use((req, res, next) => {
+  const err = new ExpressError("Page Not Found", 404);
   return next(err);
 });
 
@@ -26,6 +29,5 @@ app.use((err, req, res, next) => {
     message: err.message
   });
 });
-
 
 module.exports = app;
