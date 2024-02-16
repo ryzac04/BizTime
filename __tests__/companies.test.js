@@ -52,20 +52,20 @@ describe("GET /ibm", () => {
 
 describe("POST /", () => {
     test("Post new company info", async () => {
-        const res = await request(app).post('/companies').send({ code: 'fb', name: 'Facebook', description: 'Part of Meta.' });
+        const res = await request(app).post('/companies').send({name: 'Facebook', description: 'Part of Meta.' });
         expect(res.statusCode).toBe(201);
         expect(res.body).toEqual(
             {
                 company: {
-                    code: 'fb',
+                    code: 'facebook',
                     name: 'Facebook',
                     description: 'Part of Meta.'
                 }
             })
     })
-    test("Return 400 if post unsuccessful", async () => {
-        const res = await request(app).post('/companies').send({ code: '', name: 'Facebook', description: 'Part of Meta.' });
-        expect(res.statusCode).toBe(400);
+    test("Return 500 if post unsuccessful", async () => {
+        const res = await request(app).post('/companies').send({ name: 'Apple', description: 'Not part of Meta.' });
+        expect(res.statusCode).toBe(500);
     })
     })
 
