@@ -31,11 +31,12 @@ router.get('/:id', async (req, res, next) => {
             [id]
         );
 
-        const data = results.rows[0];
-
         if (results.rows.length === 0) {
             throw new ExpressError(`Can't find invoice with id of ${id}`, 404)
         }
+
+        const data = results.rows[0];
+
         const invoice = {
             id: data.id,
             amt: data.amt,

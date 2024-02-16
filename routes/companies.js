@@ -31,11 +31,11 @@ router.get('/:code', async (req, res, next) => {
             [code]
         );
 
-        const data = results.rows[0];
-
         if (results.rows.length === 0) {
             throw new ExpressError(`Can't find company with code of ${code}`, 404)
         }
+
+        const data = results.rows[0];
 
         const company = {
             code: data.code,
@@ -60,6 +60,12 @@ router.get('/:code', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const { code, name, description } = req.body;
+
+        // Validate input
+        if (!code || !name || !description) {
+            throw new ExpressError("Invalid post request. Please check all data is present and try again.", 400)
+        }
+
         const results = await db.query(
             `INSERT INTO companies (code, name, description) 
             VALUES ($1, $2, $3)
